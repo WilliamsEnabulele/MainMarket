@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MainMarket.Services.CouponAPI.Controllers;
 
-[Route("api/coupon")]
+[Route("api/coupons")]
 [ApiController]
 public class CouponAPIController : ControllerBase
 {
@@ -21,7 +21,7 @@ public class CouponAPIController : ControllerBase
     }
 
     [HttpGet]
-    [Route("")]
+    [Route("all")]
     [ProducesResponseType(typeof(ApiResponse<List<CouponDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -30,35 +30,35 @@ public class CouponAPIController : ControllerBase
     public async Task<IActionResult> GetCoupons()
     {
         var coupons = await _couponRepository.GetCoupons();
-        return Ok(coupons);
+        return Ok(ApiResponse<List<CouponDto>>.Success(coupons));
     }
 
     [HttpGet]
-    [Route("Id")]
+    [Route("id/{couponId}")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCouponById([FromQuery] string id)
+    public async Task<IActionResult> GetCouponById(string couponId)
     {
-        var coupon = await _couponRepository.GetCoupon(id);
-        return Ok(coupon);
+        var coupon = await _couponRepository.GetCoupon(couponId);
+        return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 
     [HttpGet]
-    [Route("Code")]
+    [Route("code/{code}")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCouponByCode([FromQuery] string code)
+    public async Task<IActionResult> GetCouponByCode(string code)
     {
         var coupon = await _couponRepository.GetCouponByCode(code);
-        return Ok(coupon);
+        return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 
     [HttpPost]
-    [Route("Create")]
+    [Route("create")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -68,25 +68,25 @@ public class CouponAPIController : ControllerBase
     {
         BaseValidator<CouponDto>.Validate(_couponDtoValidator, couponDto);
         var coupon = await _couponRepository.CreateCoupon(couponDto);
-        return Ok(coupon);
+        return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 
     [HttpDelete]
-    [Route("Delete")]
-    [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
+    [Route("delete/{couponId}")]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteCoupon(string id)
+    public async Task<IActionResult> DeleteCoupon(string couponId)
     {
-        await _couponRepository.DeleteCoupon(id);
+        await _couponRepository.DeleteCoupon(couponId);
 
-        return Ok();
+        return Ok(ApiResponse<string>.Success(string.Empty));
     }
 
     [HttpPut]
-    [Route("Update")]
+    [Route("update")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -96,6 +96,6 @@ public class CouponAPIController : ControllerBase
     {
         BaseValidator<CouponDto>.Validate(_couponDtoValidator, couponDto);
         var coupon = await _couponRepository.UpdateCoupon(couponDto);
-        return Ok(coupon);
+        return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 }
