@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CouponDto>;
+
+    <div class="container mb-5">
+    <div class="card border-secondary mt-5 mb-3">
+        <div class="card-header">Coupon List</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6 text-end">
+                    <a class="btn btn-outline-primary" asp-action="CreateCoupon">Create New Coupon</a>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Coupon Code</th>
+                        <th scope="col">Discount Amount</th>
+                        <th scope="col">Coupon Minimum Amount</th>
+                        <th scope="col">Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr class="">
+                            <td>@item.CouponCode</td>
+                            <td>@((item.DiscountAmount).ToString("c"))</td>
+                            <td>@((item.MinAmount).ToString("c"))</td>
+                            <td>@((item.CreatedAt).ToLongDateString())</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a class="btn btn-sm btn-success me-2" asp-action="UpdateCoupon" asp-route-couponId="@item.CouponId"><i class="bi bi-pen"></i></a>
+                                    <a class="btn btn-sm btn-danger" asp-action="DeleteCoupon" asp-route-couponId="@item.CouponId"><i class="bi bi-trash3"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    } 
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    </div>
+   
