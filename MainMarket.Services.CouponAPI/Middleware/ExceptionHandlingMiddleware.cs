@@ -34,12 +34,12 @@ public class ExceptionHandlingMiddleware
         var code = StatusCodes.Status500InternalServerError;
         var errors = new List<string> { ex.Message };
 
-        IEnumerable<KeyValuePair<string, List<string>>>? validationErrors = null;
+        IDictionary<string, string[]>? validationErrors = null;
 
         if (ex is CustomValidationException validationException)
         {
             code = StatusCodes.Status400BadRequest;
-            validationErrors = validationException.Errors.ToList();
+            validationErrors = validationException.Errors;
         }
         else
         {
@@ -53,7 +53,7 @@ public class ExceptionHandlingMiddleware
             };
         }
 
-        var response = JsonConvert.SerializeObject(ApiResponse<IEnumerable<KeyValuePair<string, List<string>>>>.Failure(validationErrors, errors));
+        var response = JsonConvert.SerializeObject(ApiResponse<IDictionary<string, string[]>>.Failure(validationErrors));
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = code;

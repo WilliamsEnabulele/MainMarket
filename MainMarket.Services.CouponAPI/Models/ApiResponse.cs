@@ -1,42 +1,58 @@
-﻿namespace MainMarket.Services.CouponAPI.Models;
+﻿using Newtonsoft.Json;
+
+namespace MainMarket.Services.CouponAPI.Models;
 
 public class ApiResponse<T>
 {
     public ApiResponse()
     { }
 
-    public ApiResponse(bool succeeded, T data, IEnumerable<KeyValuePair<string, List<string>>> errors)
+    public ApiResponse(bool succeeded, T data, IEnumerable<string>? errors)
     {
         Succeeded = succeeded;
         Data = data;
         Errors = errors;
     }
 
+    public ApiResponse(bool succeeded, T data,IDictionary<string, string[]> validationErrors)
+    {
+        Succeeded = succeeded;
+        Data = data;
+        ValidationErrors = validationErrors;
+    }
+
     public bool Succeeded { get; set; }
 
     public T? Data { get; set; }
 
-    public IEnumerable<KeyValuePair<string, List<string>>>? Errors { get; set; }
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public IEnumerable<string>? Errors { get; set; }
 
-    public static ApiResponse<T> Success(T data)
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public IDictionary<string, string[]>? ValidationErrors { get; set; }
+
+    public static ApiResponse<T> Success(T data, IEnumerable<string>? errors = null)
     {
-        return new ApiResponse<T>(true, data, Enumerable.Empty<KeyValuePair<string, List<string>>>());
+        return new ApiResponse<T>(true, data, errors);
     }
 
-    public static ApiResponse<T> Failure(IEnumerable<KeyValuePair<string, List<string>>>? validationErrors, IEnumerable<string>? errors)
+    public static ApiResponse<T> Failure(IDictionary<string, string[]> validationErrors)
     {
-        var mergedErrors = new List<KeyValuePair<string, List<string>>>();
-
-        if (validationErrors != null && validationErrors.Any())
+        return new ApiResponse<T>
         {
-            mergedErrors.AddRange(validationErrors);
-        }
+            Succeeded = false,
+            Data = default!,
+            ValidationErrors = validationErrors
+        };
+    }
 
-        if (errors != null && errors.Any())
+    public static ApiResponse<T> Failure(IEnumerable<string>? errors)
+    {
+        return new ApiResponse<T>
         {
-            mergedErrors.Add(new KeyValuePair<string, List<string>>(string.Empty, errors.ToList()));
-        }
-
-        return new ApiResponse<T>(false, default!, mergedErrors);
+            Succeeded = false,
+            Data = default!,
+            Errors = errors
+        };
     }
 }
