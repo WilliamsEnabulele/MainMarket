@@ -6,66 +6,66 @@ namespace MainMarket.Web.Service;
 
 public class CouponService : ICouponService
 {
-    private readonly IBaseService<CouponDto, CouponDto> _baseService;
+    private readonly IBaseService _baseService;
 
-    public CouponService(IBaseService<CouponDto, CouponDto> baseService)
+    public CouponService(IBaseService baseService)
     {
         _baseService = baseService;
     }
 
-    public async Task<ApiResponse<CouponDto>> CreateCouponAsync(RequestDto<CouponDto> requestDto)
+    public async Task<ApiResponse<CouponDto>> CreateCouponAsync(CouponDto couponDto)
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, CouponDto>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.POST,
-            Url = CouponAPIBase + "api/coupon/create",
-            Data = requestDto.Data,
-            AccessToken = requestDto.AccessToken,
+            Url = CouponAPIBase + "api/coupons/create",
+            Data = couponDto
         });
     }
 
-    public async Task<ApiResponse<CouponDto>> DeleteCouponAsync(string id)
+    public async Task<ApiResponse<CouponDto>> DeleteCouponAsync(string couponId)
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, CouponDto>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.DELETE,
-            Url = CouponAPIBase + "api/delete?" + id,
+            Url = CouponAPIBase + "api/coupons/delete/" + couponId,
         });
     }
 
-    public async Task<ApiResponse<CouponDto>> GetAllCouponsAsync()
+    public async Task<ApiResponse<List<CouponDto>>> GetAllCouponsAsync()
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, List<CouponDto>>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.GET,
-            Url = CouponAPIBase + "api/coupon"
+            Url = CouponAPIBase + "api/coupons/all"
         });
     }
 
     public async Task<ApiResponse<CouponDto>> GetCouponAsync(string couponCode)
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, CouponDto>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.GET,
-            Url = CouponAPIBase + "api/coupon/code?" + couponCode,
+            Url = CouponAPIBase + "api/coupons/code/" + couponCode,
         });
     }
 
-    public async Task<ApiResponse<CouponDto>> GetCouponByIdAsync(string id)
+    public async Task<ApiResponse<CouponDto>> GetCouponByIdAsync(string couponId)
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, CouponDto>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.GET,
-            Url = CouponAPIBase + "api/coupon/id?" + id,
+            Url = CouponAPIBase + "api/coupons/id/" + couponId,
         });
     }
 
-    public async Task<ApiResponse<CouponDto>> UpdateCouponAsync(string id)
+    public async Task<ApiResponse<CouponDto>> UpdateCouponAsync(CouponDto couponDto)
     {
-        return await _baseService.SendAsync(new RequestDto<CouponDto>
+        return await _baseService.SendAsync<CouponDto, CouponDto>(new RequestDto<CouponDto>
         {
             ApiType = ApiType.PUT,
-            Url = CouponAPIBase + "api/coupon/update?" + id,
+            Url = CouponAPIBase + "api/coupons/update",
+            Data = couponDto
         });
     }
 }

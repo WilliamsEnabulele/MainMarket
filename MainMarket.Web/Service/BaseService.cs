@@ -7,7 +7,7 @@ using static MainMarket.Web.Util.StaticDetails;
 
 namespace MainMarket.Web.Service;
 
-public class BaseService<TRequest, TResponse> : IBaseService<TRequest, TResponse> where TRequest : class where TResponse : class
+public class BaseService : IBaseService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     public BaseService(IHttpClientFactory httpClientFactory)
@@ -15,13 +15,18 @@ public class BaseService<TRequest, TResponse> : IBaseService<TRequest, TResponse
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<ApiResponse<TResponse>> SendAsync(RequestDto<TRequest> requestDto)
+    public async Task<ApiResponse<TResponse>> SendAsync<TRequest, TResponse>(RequestDto<TRequest> requestDto)
+        where TRequest : class
+        where TResponse : class
     {
         try
         {
             HttpClient client = _httpClientFactory.CreateClient("MainMarket API");
+
             HttpRequestMessage message = new();
+
             message.Headers.Add("Accept", "application/json");
+           
             //token
             message.RequestUri = new Uri(requestDto.Url);
 
@@ -33,6 +38,7 @@ public class BaseService<TRequest, TResponse> : IBaseService<TRequest, TResponse
             }
 
             HttpResponseMessage? apiResponse = null;
+
             switch(requestDto.ApiType)
             {
                 case ApiType.POST: 
@@ -52,7 +58,7 @@ public class BaseService<TRequest, TResponse> : IBaseService<TRequest, TResponse
             apiResponse = await client.SendAsync(message);
             var apiContent = await apiResponse.Content.ReadAsStringAsync();
             var apiResponseDto = JsonConvert.DeserializeObject<ApiResponse<TResponse>>(apiContent);
-            var errors = apiResponseDto.Errors;
+            var errors = apiResponseDto?.Errors;
 
             switch (apiResponse.StatusCode)
             {
@@ -74,5 +80,4 @@ public class BaseService<TRequest, TResponse> : IBaseService<TRequest, TResponse
             throw;
         }
     }
-
 }
