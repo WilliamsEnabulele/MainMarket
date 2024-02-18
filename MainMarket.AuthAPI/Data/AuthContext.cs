@@ -1,4 +1,4 @@
-﻿using MainMarket.AuthAPI.Models;
+﻿using MainMarket.AuthAPI.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

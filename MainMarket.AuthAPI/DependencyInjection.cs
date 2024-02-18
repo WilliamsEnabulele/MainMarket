@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MainMarket.AuthAPI.Data;
-using MainMarket.AuthAPI.Models;
+using MainMarket.AuthAPI.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
