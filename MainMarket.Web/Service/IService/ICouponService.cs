@@ -6,13 +6,13 @@ public interface ICouponService
 {
     Task<ApiResponse<CouponDto>> GetCouponAsync(string couponCode);
 
-    Task<ApiResponse<CouponDto>> GetAllCouponsAsync();
+    Task<ApiResponse<List<CouponDto>>> GetAllCouponsAsync();
 
-    Task<ApiResponse<CouponDto>> GetCouponByIdAsync(string id);
+    Task<ApiResponse<CouponDto>> GetCouponByIdAsync(string couponId);
 
-    Task<ApiResponse<CouponDto>> CreateCouponAsync(RequestDto<CouponDto> requestDto);
+    Task<ApiResponse<CouponDto>> CreateCouponAsync(CouponDto couponDto);
 
-    Task<ApiResponse<CouponDto>> UpdateCouponAsync(string id);
+    Task<ApiResponse<CouponDto>> UpdateCouponAsync(CouponDto couponDto);
 
-    Task<ApiResponse<CouponDto>> DeleteCouponAsync(string id);
+    Task<ApiResponse<CouponDto>> DeleteCouponAsync(string couponId);
 }

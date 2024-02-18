@@ -2,7 +2,7 @@
 
 namespace MainMarket.Web.Service.IService;
 
-public interface IBaseService<TRequest, TResponse> where TRequest : class where TResponse : class
+public interface IBaseService
 {
-    Task<ApiResponse<TResponse>> SendAsync(RequestDto<TRequest> couponDto);
+    Task<ApiResponse<TResponse>> SendAsync<TRequest, TResponse>(RequestDto<TRequest> couponDto) where TRequest : class where TResponse : class;
 }
