@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
 using MainMarket.AuthAPI.Data;
 using MainMarket.AuthAPI.Models.Entities;
+using MainMarket.AuthAPI.Models.Options;
+using MainMarket.AuthAPI.Service;
+using MainMarket.AuthAPI.Service.IService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +27,20 @@ public static class DependencyInjection
 
         // Add DbContext
         services.AddDbContext<AuthContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        // Add Options
+        services.Configure<JwtOptions>(configuration.GetSection("ApiSettings:JwtOptions"));
+
+        // Add Identity
         services.AddIdentity<AppUser, IdentityRole>()
             .AddEntityFrameworkStores<AuthContext>()
             .AddDefaultTokenProviders();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        services.AddScoped<IJwtGenerator, JwtGenerator>();
+        services.AddScoped<IAuthService, AuthService>();
+ 
 
         services.AddControllers();
 
