@@ -33,7 +33,6 @@ public class ExceptionHandlingMiddleware
 
         var code = StatusCodes.Status500InternalServerError;
         var errors = new List<string> { ex.Message };
-
         IDictionary<string, string[]>? validationErrors = null;
 
         if (ex is CustomValidationException validationException)
@@ -53,7 +52,9 @@ public class ExceptionHandlingMiddleware
             };
         }
 
-        var response = JsonConvert.SerializeObject(ApiResponse<IDictionary<string, string[]>>.Failure(validationErrors));
+        var response = validationErrors != null ? 
+            JsonConvert.SerializeObject(ApiResponse<IDictionary<string, string[]>>.Failure(validationErrors, code)) :
+            JsonConvert.SerializeObject(ApiResponse<IEnumerable<string>>.Failure(errors, code));
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = code;

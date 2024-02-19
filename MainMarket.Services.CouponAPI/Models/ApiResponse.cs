@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Net;
 
 namespace MainMarket.Services.CouponAPI.Models;
 
@@ -15,7 +14,7 @@ public class ApiResponse<T>
         Errors = errors;
     }
 
-    public ApiResponse(bool succeeded, T data,IDictionary<string, string[]> validationErrors)
+    public ApiResponse(bool succeeded, T data, IDictionary<string, string[]> validationErrors)
     {
         Succeeded = succeeded;
         Data = data;
