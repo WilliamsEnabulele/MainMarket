@@ -17,6 +17,7 @@ public class ApiResponse<T>
     public ApiResponse(bool succeeded, T data, IDictionary<string, string[]> validationErrors)
     {
         Succeeded = succeeded;
+        StatusCode = 200;
         Data = data;
         ValidationErrors = validationErrors;
     }
