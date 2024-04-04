@@ -21,7 +21,7 @@ Welcome to the Microservices-based MainMarket E-commerce Platform Architecture R
 Our e-commerce platform is built on a microservices architecture, allowing us to break down complex functionalities into smaller, independent services. Each service is responsible for a specific aspect of the e-commerce workflow, enabling rapid development, deployment, and scalability. Leveraging cloud-native technologies and best practices, our platform ensures high availability, fault tolerance, and efficient resource utilization.
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph dotnetMVC["dotnetMVC Client"]
     end
 
