@@ -1,4 +1,4 @@
-﻿namespace MainMarket.Services.CouponAPI.Exceptions
+﻿namespace MainMarket.Services.ProductAPI.Exceptions
 {
     [Serializable]
     public class BadRequestException : Exception

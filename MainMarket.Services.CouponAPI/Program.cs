@@ -1,15 +1,12 @@
-using MainMarket.Services.CouponAPI;
-using MainMarket.Services.CouponAPI.Data;
-using MainMarket.Services.CouponAPI.Middleware;
-using MainMarket.Services.CouponAPI.Models.DTO;
-using MainMarket.Services.CouponAPI.Models.Validation;
+using MainMarket.Services.ProductAPI;
+using MainMarket.Services.ProductAPI.Data;
+using MainMarket.Services.ProductAPI.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var configuration = builder.Configuration;
-builder.Services.AddServices(configuration);
+builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MainMarket.Services.CouponAPI.Models.DTO;
-using MainMarket.Services.CouponAPI.Models.Entities;
+using MainMarket.Services.ProductAPI.Models.DTO;
+using MainMarket.Services.ProductAPI.Models.Entities;
 
-namespace MainMarket.Services.CouponAPI.Mappers;
+namespace MainMarket.Services.ProductAPI.Mappers;
 
 public class MapInitializer : Profile
 {

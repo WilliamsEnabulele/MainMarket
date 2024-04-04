@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MainMarket.Services.CouponAPI.Models;
+namespace MainMarket.Services.ProductAPI.Models;
 
 public class ApiResponse<T>
 {

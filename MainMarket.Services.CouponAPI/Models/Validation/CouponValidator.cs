@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using MainMarket.Services.CouponAPI.Models.DTO;
+using MainMarket.Services.ProductAPI.Models.DTO;
 
-namespace MainMarket.Services.CouponAPI.Models.Validation
+namespace MainMarket.Services.ProductAPI.Models.Validation
 {
     public class CouponValidator : AbstractValidator<CouponDto>
     {

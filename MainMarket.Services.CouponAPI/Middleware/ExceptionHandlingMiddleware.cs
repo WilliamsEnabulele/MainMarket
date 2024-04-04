@@ -1,8 +1,8 @@
-﻿using MainMarket.Services.CouponAPI.Exceptions;
-using MainMarket.Services.CouponAPI.Models;
+﻿using MainMarket.Services.ProductAPI.Exceptions;
+using MainMarket.Services.ProductAPI.Models;
 using Newtonsoft.Json;
 
-namespace MainMarket.Services.CouponAPI.Middleware;
+namespace MainMarket.Services.ProductAPI.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
@@ -33,28 +33,18 @@ public class ExceptionHandlingMiddleware
 
         var code = StatusCodes.Status500InternalServerError;
         var errors = new List<string> { ex.Message };
-        IDictionary<string, string[]>? validationErrors = null;
 
-        if (ex is CustomValidationException validationException)
-        {
-            code = StatusCodes.Status400BadRequest;
-            validationErrors = validationException.Errors;
-        }
-        else
-        {
-            code = ex switch
-            {
-                NotFoundException => StatusCodes.Status404NotFound,
-                UnauthorizedException => StatusCodes.Status401Unauthorized,
-                UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
-                BadRequestException => StatusCodes.Status400BadRequest,
-                _ => code
-            };
-        }
 
-        var response = validationErrors != null ? 
-            JsonConvert.SerializeObject(ApiResponse<IDictionary<string, string[]>>.Failure(validationErrors, code)) :
-            JsonConvert.SerializeObject(ApiResponse<IEnumerable<string>>.Failure(errors, code));
+        code = ex switch
+        {
+            NotFoundException => StatusCodes.Status404NotFound,
+            UnauthorizedException => StatusCodes.Status401Unauthorized,
+            UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
+            BadRequestException => StatusCodes.Status400BadRequest,
+            _ => code
+        };
+        
+        var response = JsonConvert.SerializeObject(ApiResponse<IEnumerable<string>>.Failure(errors, code));
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = code;

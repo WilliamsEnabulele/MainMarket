@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using MainMarket.Services.CouponAPI.Data;
-using MainMarket.Services.CouponAPI.Exceptions;
-using MainMarket.Services.CouponAPI.Interfaces;
-using MainMarket.Services.CouponAPI.Models.DTO;
-using MainMarket.Services.CouponAPI.Models.Entities;
+using MainMarket.Services.ProductAPI.Data;
+using MainMarket.Services.ProductAPI.Exceptions;
+using MainMarket.Services.ProductAPI.Interfaces;
+using MainMarket.Services.ProductAPI.Models.DTO;
+using MainMarket.Services.ProductAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MainMarket.Services.CouponAPI.Repository;
+namespace MainMarket.Services.ProductAPI.Repository;
 
 public class CouponRepository : ICouponRepository
 {
@@ -58,7 +58,7 @@ public class CouponRepository : ICouponRepository
     {
         var couponEntity = _dbSet.FirstOrDefault(x => x.CouponId == Id) ?? throw new NotFoundException("Coupon Id not found");
         _dbSet.Remove(couponEntity);
-         await _couponContext.SaveChangesAsync();
+        await _couponContext.SaveChangesAsync();
     }
 
     public async Task<CouponDto> UpdateCoupon(CouponDto couponDto)

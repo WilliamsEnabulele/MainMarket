@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MainMarket.Services.CouponAPI.Models.Entities;
+namespace MainMarket.Services.ProductAPI.Models.Entities;
 
 public class Coupon
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string CouponId { get; set; }
+
     public string CouponCode { get; set; }
     public decimal DiscountAmount { get; set; }
     public int MinAmount { get; set; }

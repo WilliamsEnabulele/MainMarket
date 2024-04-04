@@ -1,40 +1,36 @@
-﻿using FluentValidation;
-using MainMarket.Services.CouponAPI.Interfaces;
-using MainMarket.Services.CouponAPI.Models;
-using MainMarket.Services.CouponAPI.Models.DTO;
-using MainMarket.Services.CouponAPI.Models.Validation;
+﻿using MainMarket.Services.ProductAPI.Interfaces;
+using MainMarket.Services.ProductAPI.Models;
+using MainMarket.Services.ProductAPI.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainMarket.Services.CouponAPI.Controllers;
+namespace MainMarket.Services.ProductAPI.Controllers;
 
 [Route("api/coupons")]
 [ApiController]
-public class CouponAPIController : ControllerBase
+public class CouponController : ControllerBase
 {
     private readonly ICouponRepository _couponRepository;
-    private readonly IValidator<CouponDto> _couponDtoValidator;
 
-    public CouponAPIController(ICouponRepository couponRepository, IValidator<CouponDto> couponDtoValidadtor)
+    public CouponController(ICouponRepository couponRepository)
     {
         _couponRepository = couponRepository;
-        _couponDtoValidator = couponDtoValidadtor;
     }
 
     [HttpGet]
-    [Route("all")]
     [ProducesResponseType(typeof(ApiResponse<List<CouponDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> GetCoupons()
     {
         var coupons = await _couponRepository.GetCoupons();
         return Ok(ApiResponse<List<CouponDto>>.Success(coupons));
     }
 
-    [HttpGet]
-    [Route("id/{couponId}")]
+    [HttpGet("{couponId}")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -45,8 +41,7 @@ public class CouponAPIController : ControllerBase
         return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 
-    [HttpGet]
-    [Route("code/{code}")]
+    [HttpGet("{code}")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -58,26 +53,25 @@ public class CouponAPIController : ControllerBase
     }
 
     [HttpPost]
-    [Route("create")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> CreateCoupon([FromBody] CouponDto couponDto)
     {
-        BaseValidator<CouponDto>.Validate(_couponDtoValidator, couponDto);
         var coupon = await _couponRepository.CreateCoupon(couponDto);
         return Ok(ApiResponse<CouponDto>.Success(coupon));
     }
 
-    [HttpDelete]
-    [Route("delete/{couponId}")]
+    [HttpDelete("{couponId}")]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> DeleteCoupon(string couponId)
     {
         await _couponRepository.DeleteCoupon(couponId);
@@ -86,15 +80,14 @@ public class CouponAPIController : ControllerBase
     }
 
     [HttpPut]
-    [Route("update")]
     [ProducesResponseType(typeof(ApiResponse<CouponDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> UpdateCoupon([FromBody] CouponDto couponDto)
     {
-        BaseValidator<CouponDto>.Validate(_couponDtoValidator, couponDto);
         var coupon = await _couponRepository.UpdateCoupon(couponDto);
         return Ok(ApiResponse<CouponDto>.Success(coupon));
     }

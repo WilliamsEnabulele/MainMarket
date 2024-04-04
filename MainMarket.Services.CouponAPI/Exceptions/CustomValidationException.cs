@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace MainMarket.Services.CouponAPI.Exceptions
+﻿namespace MainMarket.Services.ProductAPI.Exceptions
 {
     public class CustomValidationException : Exception
     {

@@ -1,6 +1,6 @@
-﻿using MainMarket.Services.CouponAPI.Models.DTO;
+﻿using MainMarket.Services.ProductAPI.Models.DTO;
 
-namespace MainMarket.Services.CouponAPI.Interfaces;
+namespace MainMarket.Services.ProductAPI.Interfaces;
 
 public interface ICouponRepository
 {

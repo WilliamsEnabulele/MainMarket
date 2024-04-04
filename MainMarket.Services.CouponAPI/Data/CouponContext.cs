@@ -1,13 +1,12 @@
-﻿using MainMarket.Services.CouponAPI.Models.Entities;
+﻿using MainMarket.Services.ProductAPI.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MainMarket.Services.CouponAPI.Data;
+namespace MainMarket.Services.ProductAPI.Data;
 
 public class CouponContext : DbContext
 {
-    public CouponContext(DbContextOptions<CouponContext> options): base(options)
+    public CouponContext(DbContextOptions<CouponContext> options) : base(options)
     {
-        
     }
 
     public DbSet<Coupon> Coupons { get; set; }
