@@ -4,5 +4,5 @@ namespace MainMarket.AuthAPI.Service.IService;
 
 public interface IJwtGenerator
 {
-    string GenerateJwt(AppUser user);
+    string GenerateJwt(AppUser user, IList<string> roles);
 }

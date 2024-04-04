@@ -1,6 +1,6 @@
 ﻿namespace MainMarket.AuthAPI.Models.DTO;
 
-public class RegistrationRequestDTO
+public class RegistrationRequest
 {
     public string Name { get; set; }
     public string Email { get; set; }

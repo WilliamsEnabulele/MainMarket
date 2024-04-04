@@ -42,19 +42,22 @@ public class AuthService : IAuthService
         return false;
     }
 
-    public async Task<LoginResponse> Login(LoginRequestDTO requestDTO)
+    public async Task<LoginResponse> Login(LoginRequest requestDTO)
     {
         var user = _context.Users.FirstOrDefault(u => u.Email == requestDTO.Email) ?? throw new NotFoundException("No user with email exist");
         bool isValid = await _userManager.CheckPasswordAsync(user, requestDTO.Password);
         if (!isValid) throw new NotFoundException("Password is incorrect");
+
+        var roles = await _userManager.GetRolesAsync(user);
+
         return new LoginResponse
         {
             User = _mapper.Map<UserDTO>(user),
-            Token = _jwtGenerator.GenerateJwt(user)
+            Token = _jwtGenerator.GenerateJwt(user, roles)
         };
     }
 
-    public async Task<string> Register(RegistrationRequestDTO requestDTO)
+    public async Task<string> Register(RegistrationRequest requestDTO)
     {
         var user = _mapper.Map<AppUser>(requestDTO);
         user.UserName = requestDTO.Email;

@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace MainMarket.Services.AuthAPI.Exceptions
+﻿namespace MainMarket.Services.AuthAPI.Exceptions
 {
     public class CustomValidationException : Exception
     {

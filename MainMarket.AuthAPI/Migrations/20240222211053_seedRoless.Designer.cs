@@ -4,6 +4,7 @@ using MainMarket.AuthAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MainMarket.AuthAPI.Migrations
 {
     [DbContext(typeof(AuthContext))]
-    partial class AuthContextModelSnapshot : ModelSnapshot
+    [Migration("20240222211053_seedRoless")]
+    partial class seedRoless
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,19 +124,19 @@ namespace MainMarket.AuthAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a66f4551-d5ff-4c34-b777-222caba47966",
+                            Id = "60822a8f-cf41-49cf-92f0-a1018a24c85a",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f042cc1a-bc55-4565-81f6-62a829c4d9f4",
+                            Id = "eacde577-d1a4-4d5c-8709-d7d7fc614acc",
                             Name = "CUSTOMER",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "f13db2eb-145e-40a8-9a4d-8b6150fcc9ea",
+                            Id = "88b49107-d2d8-4765-ac3c-d8471b7db52d",
                             Name = "BUSINESS",
                             NormalizedName = "BUSINESS"
                         });

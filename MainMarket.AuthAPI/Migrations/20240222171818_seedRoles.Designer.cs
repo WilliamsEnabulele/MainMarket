@@ -4,6 +4,7 @@ using MainMarket.AuthAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MainMarket.AuthAPI.Migrations
 {
     [DbContext(typeof(AuthContext))]
-    partial class AuthContextModelSnapshot : ModelSnapshot
+    [Migration("20240222171818_seedRoles")]
+    partial class seedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,21 +124,18 @@ namespace MainMarket.AuthAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a66f4551-d5ff-4c34-b777-222caba47966",
-                            Name = "ADMIN",
-                            NormalizedName = "ADMIN"
+                            Id = "0456a5f1-b6d5-4413-8fdc-2ddbcb1c4bf6",
+                            Name = "ADMIN"
                         },
                         new
                         {
-                            Id = "f042cc1a-bc55-4565-81f6-62a829c4d9f4",
-                            Name = "CUSTOMER",
-                            NormalizedName = "CUSTOMER"
+                            Id = "a8e20376-6d08-4401-b86d-23d6ea41b5dc",
+                            Name = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "f13db2eb-145e-40a8-9a4d-8b6150fcc9ea",
-                            Name = "BUSINESS",
-                            NormalizedName = "BUSINESS"
+                            Id = "0bd116ed-4efe-4069-9451-9278ee24c252",
+                            Name = "BUSINESS"
                         });
                 });
 

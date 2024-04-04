@@ -3,7 +3,7 @@ using MainMarket.AuthAPI.Models.DTO;
 
 namespace MainMarket.AuthAPI.Models.Validation;
 
-public class LoginRequestValidator : AbstractValidator<LoginRequestDTO>
+public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()
     {

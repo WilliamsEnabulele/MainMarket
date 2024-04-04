@@ -8,8 +8,8 @@ public class MapInitializer : Profile
 {
     public MapInitializer()
     {
-        CreateMap<RegistrationRequestDTO, AppUser>();
-        CreateMap<LoginRequestDTO, AppUser>();
+        CreateMap<RegistrationRequest, AppUser>();
+        CreateMap<LoginRequest, AppUser>();
         CreateMap<AppUser, UserDTO>();
     }
 }
