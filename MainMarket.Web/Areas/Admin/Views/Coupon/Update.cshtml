@@ -1,36 +1,29 @@
-﻿@model CouponDto
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@model CouponDto
 
 <div class="container">
     <ol class="mt-5 mb-5 breadcrumb">
-        <li class="breadcrumb-item"><a asp-action="CouponIndex">Coupons</a></li>
-        <li class="breadcrumb-item active">Coupon</li>
+        <li class="breadcrumb-item"><a asp-action="Index">Coupons</a></li>
+        <li class="breadcrumb-item active">Update Coupon</li>
     </ol>
-    <form asp-action="CreateCoupon" class="mt-5">
-        <fieldset>
-            <legend>Create Coupon</legend>
-  
+    <form asp-action="CouponUpdate" class="mt-5">
+            <input asp-for="CouponId" hidden/>
             <div class="form-group">
                 <label for="couponCode" class="form-label mt-4">Coupon Code</label>
                 <input asp-for="CouponCode" type="text" class="form-control" id="couponCode" aria-describedby="couponHelp" placeholder="Coupon Code">
-                <small id="couponHelp" class="form-text text-muted">Enter a suggestive name</small><br />
-                <span asp-validation-for="CouponCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="couponDiscountAmount" class="form-label mt-4">Discount Amount</label>
                 <input asp-for="DiscountAmount" type="number" class="form-control" id="couponDiscountAmount" placeholder="Discount Amount" autocomplete="off">
-                <span asp-validation-for="DiscountAmount" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-4">
                 <label for="couponMinimumAmount" class="form-label mt-4">Minimum Amount</label>
                 <input asp-for="MinAmount" type="number" class="form-control" id="couponMinimumAmount" aria-describedby="minimumHelp" placeholder="Minimum Amount" autocomplete="off">
-                <span asp-validation-for="MinAmount" class="text-danger"></span>
-                <small id="minimumHelp" class="form-text text-muted">Total cart amount for coupon to be applicable</small>
             </div>
-            <input type="submit" class="btn btn-primary form-control mt-3">
-        </fieldset>
+            <input type="submit" class="btn btn-success form-control mt-3" value="Update">
     </form>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

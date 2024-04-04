@@ -1,20 +1,9 @@
-using MainMarket.Web.Service;
-using MainMarket.Web.Service.IService;
-using MainMarket.Web.Util;
+using MainMarket.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<ICouponService, CouponService>();
-
-StaticDetails.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
-
-builder.Services.AddScoped<IBaseService, BaseService>();
-
-builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,10 +20,23 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapAreaControllerRoute(
+    name: "admin",
+    areaName: "admin",
+    pattern: "admin/{controller=Dashboard}/{action=Index}"
+  );
+
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+  name: "areaRoute",
+  pattern: "{area:exists}/{controller}/{action}"
+);
+
+app.MapControllerRoute(
+name: "default",
+pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

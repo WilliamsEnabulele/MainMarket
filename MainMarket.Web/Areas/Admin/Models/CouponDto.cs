@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MainMarket.Web.Models;
+﻿namespace MainMarket.Web.Areas.Admin.Models;
 
 public class CouponDto
 {

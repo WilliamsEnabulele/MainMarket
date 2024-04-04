@@ -2,7 +2,7 @@
 
 namespace MainMarket.Web.Models;
 
-public class RequestDto<TRequest> where TRequest : class
+public class ApiRequest<TRequest> where TRequest : class
 {
     public ApiType ApiType { get; set; }
     public string Url { get; set; }

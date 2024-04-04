@@ -1,8 +1,9 @@
-﻿using MainMarket.Web.Models;
-using MainMarket.Web.Service.IService;
+﻿using MainMarket.Web.Areas.Admin.Models;
+using MainMarket.Web.Areas.Admin.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainMarket.Web.Controllers;
+namespace MainMarket.Web.Areas.Admin.Controllers;
 
 public class CouponController : Controller
 {
@@ -13,13 +14,13 @@ public class CouponController : Controller
         _couponService = couponService;
     }
 
-    public async Task<IActionResult> CouponIndex()
+    public async Task<IActionResult> Index()
     {
         var couponList = new List<CouponDto>();
         var response = await _couponService.GetAllCouponsAsync();
         if (response != null && response.Succeeded)
         {
-            couponList= response.Data;
+            couponList = response.Data;
         }
         else
         {
@@ -28,7 +29,7 @@ public class CouponController : Controller
         return View(couponList);
     }
 
-    public async Task<IActionResult> UpdateCoupon(string couponId)
+    public async Task<IActionResult> Update(string couponId)
     {
         var response = await _couponService.GetCouponByIdAsync(couponId);
         if (response != null && response.Succeeded)
@@ -39,7 +40,7 @@ public class CouponController : Controller
         return NotFound();
     }
 
-    public async Task<IActionResult> DeleteCoupon(string couponId)
+    public async Task<IActionResult> Delete(string couponId)
     {
         var response = await _couponService.GetCouponByIdAsync(couponId);
 
@@ -51,21 +52,22 @@ public class CouponController : Controller
         return NotFound();
     }
 
-    public IActionResult CreateCoupon()
+    public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCoupon(CouponDto couponDto)
-    {      
-        if (ModelState.IsValid) {
+    public async Task<IActionResult> Create(CouponDto couponDto)
+    {
+        if (ModelState.IsValid)
+        {
             var response = await _couponService.CreateCouponAsync(couponDto);
 
             if (response.Succeeded)
             {
                 TempData["success"] = "Coupon successfully created";
-                return RedirectToAction(nameof(CouponIndex));
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -83,7 +85,7 @@ public class CouponController : Controller
         if (response != null && response.Succeeded)
         {
             TempData["success"] = "Coupon successfully updated";
-            return RedirectToAction(nameof(CouponIndex));
+            return RedirectToAction(nameof(Index));
         }
         else
         {
@@ -101,7 +103,7 @@ public class CouponController : Controller
         if (response != null && response.Succeeded)
         {
             TempData["success"] = "Coupon successfully deleted";
-            return RedirectToAction(nameof(CouponIndex));
+            return RedirectToAction(nameof(Index));
         }
         else
         {

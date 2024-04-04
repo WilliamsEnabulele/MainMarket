@@ -1,13 +1,17 @@
-﻿@model IEnumerable<CouponDto>;
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
 
-    <div class="container mb-5">
+@model IEnumerable<CouponDto>;
+
+    <div class="container mt-5 mb-5">
     <div class="card border-secondary mt-5 mb-3">
-        <div class="card-header">Coupon List</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6"></div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-outline-primary" asp-action="CreateCoupon">Create New Coupon</a>
+                    <a class="btn btn-outline-primary" asp-action="Create">Create New Coupon</a>
                 </div>
             </div>
             <table class="table table-hover">
@@ -30,8 +34,8 @@
                             <td>@((item.CreatedAt).ToLongDateString())</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <a class="btn btn-sm btn-success me-2" asp-action="UpdateCoupon" asp-route-couponId="@item.CouponId"><i class="bi bi-pen"></i></a>
-                                    <a class="btn btn-sm btn-danger" asp-action="DeleteCoupon" asp-route-couponId="@item.CouponId"><i class="bi bi-trash3"></i></a>
+                                    <a class="btn btn-sm btn-success me-2" asp-action="Update" asp-route-couponId="@item.CouponId"><i class="bi bi-pen"></i></a>
+                                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-couponId="@item.CouponId"><i class="bi bi-trash3"></i></a>
                                 </div>
                             </td>
                         </tr>

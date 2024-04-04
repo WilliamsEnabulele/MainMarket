@@ -1,6 +1,7 @@
-﻿using MainMarket.Web.Models;
+﻿using MainMarket.Web.Areas.Admin.Models;
+using MainMarket.Web.Models;
 
-namespace MainMarket.Web.Service.IService;
+namespace MainMarket.Web.Areas.Admin.Service.IService;
 
 public interface ICouponService
 {

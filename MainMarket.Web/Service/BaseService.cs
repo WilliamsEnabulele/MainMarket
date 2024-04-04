@@ -10,12 +10,15 @@ namespace MainMarket.Web.Service;
 public class BaseService : IBaseService
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    public BaseService(IHttpClientFactory httpClientFactory)
+    private readonly ITokenProvider _tokenProvider;
+
+    public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
     {
         _httpClientFactory = httpClientFactory;
+        _tokenProvider = tokenProvider;
     }
 
-    public async Task<ApiResponse<TResponse>> SendAsync<TRequest, TResponse>(RequestDto<TRequest> requestDto)
+    public async Task<ApiResponse<TResponse>> SendAsync<TRequest, TResponse>(ApiRequest<TRequest> requestDto, bool bearer = true)
         where TRequest : class
         where TResponse : class
     {
@@ -26,57 +29,47 @@ public class BaseService : IBaseService
             HttpRequestMessage message = new();
 
             message.Headers.Add("Accept", "application/json");
-           
-            //token
-            message.RequestUri = new Uri(requestDto.Url);
 
+            if (bearer)
+            {
+                var token = _tokenProvider.GetToken();
+                message.Headers.Add("Authorization", $"Bearer {token}");
+            }
+             
+            message.RequestUri = new Uri(requestDto.Url);
 
             if (requestDto.Data != null)
             {
                 message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
-
             }
 
             HttpResponseMessage? apiResponse = null;
 
-            switch(requestDto.ApiType)
+            message.Method = requestDto.ApiType switch
             {
-                case ApiType.POST: 
-                    message.Method = HttpMethod.Post;
-                    break;
-                case ApiType.PUT:
-                    message.Method = HttpMethod.Put;
-                    break;
-                case ApiType.DELETE:
-                    message.Method = HttpMethod.Delete;
-                    break;
-                default:
-                    message.Method = HttpMethod.Get;
-                    break;
-            }
+                ApiType.POST => HttpMethod.Post,
+                ApiType.PUT => HttpMethod.Put,
+                ApiType.DELETE => HttpMethod.Delete,
+                _ => HttpMethod.Get,
+            };
 
             apiResponse = await client.SendAsync(message);
             var apiContent = await apiResponse.Content.ReadAsStringAsync();
             var apiResponseDto = JsonConvert.DeserializeObject<ApiResponse<TResponse>>(apiContent);
             var errors = apiResponseDto?.Errors;
+            var validationErrors = apiResponseDto?.ValidationErrors;
 
-            switch (apiResponse.StatusCode)
+            return apiResponse.StatusCode switch
             {
-                case HttpStatusCode.NotFound:
-                    return ApiResponse<TResponse>.Failure(errors);
-                case HttpStatusCode.BadRequest:
-                    return ApiResponse<TResponse>.Failure(errors);
-                case HttpStatusCode.Unauthorized:
-                    return ApiResponse<TResponse>.Failure(errors);
-                case HttpStatusCode.InternalServerError:
-                    return ApiResponse<TResponse>.Failure(errors);
-                default:
-                    return apiResponseDto;
-            }
+                HttpStatusCode.NotFound => ApiResponse<TResponse>.Failure(errors, (int)HttpStatusCode.NotFound),
+                HttpStatusCode.BadRequest => ApiResponse<TResponse>.Failure(validationErrors, (int)HttpStatusCode.BadRequest),
+                HttpStatusCode.Unauthorized => ApiResponse<TResponse>.Failure(errors, (int)HttpStatusCode.Unauthorized),
+                HttpStatusCode.InternalServerError => ApiResponse<TResponse>.Failure(errors, (int)HttpStatusCode.InternalServerError),
+                _ => apiResponseDto,
+            };
         }
         catch (Exception)
         {
-
             throw;
         }
     }
